@@ -17,8 +17,10 @@ Este repositorio contiene un conjunto de archivos de configuración para crear u
 
 ## Estructura del proyecto
 
-- **Dockerfile**: Define la imagen de Docker con Apache Spark y PySpark.
-- **docker-compose.yml**: Archivo de configuración de Docker Compose que define los servicios y redes.
+- **Dockerfile**: Define la imagen de Docker con Apache Spark, PySpark, Java y Scala.
+- **docker-compose.yml**: Archivo de configuración de Docker Compose que define los servicios `spark-master` y `spark-worker`, así como las redes y volúmenes necesarios.
+- **src/**: Contiene el código fuente del proyecto, incluyendo el archivo `requirements.txt` para las dependencias de Python.
+- **worker.py**: Archivo Python que se utilizará en el contenedor.
 
 ## Instrucciones de uso
 
@@ -37,20 +39,32 @@ Este repositorio contiene un conjunto de archivos de configuración para crear u
    docker-compose up
    ```
 
-4. Accede al contenedor interactivo:  
+4. Accede al contenedor interactivo del master:  
    ```bash
-   docker exec -it <NOMBRE_DEL_CONTENEDOR> /bin/bash
+   docker exec -it <NOMBRE_DEL_CONTENEDOR_MASTER> /bin/bash
+   ```
+
+5. Accede al contenedor interactivo del worker:  
+   ```bash
+   docker exec -it <NOMBRE_DEL_CONTENEDOR_WORKER> /bin/bash
    ```
 
 ## Ejemplo de uso
 
-Una vez dentro del contenedor, puedes iniciar una sesión de PySpark ejecutando el siguiente comando:
+Una vez dentro del contenedor del master, puedes iniciar una sesión de PySpark ejecutando el siguiente comando:
 
 ```bash
 pyspark
 ```
 
 Esto abrirá la interfaz interactiva de PySpark, donde podrás ejecutar tus scripts y realizar análisis de datos.
+
+## Acceso a las interfaces web
+
+- **Spark Master UI**: [http://localhost:8080](http://localhost:8080)  
+- **Spark Worker UI**: [http://localhost:8081](http://localhost:8081)  
+
+Estas interfaces te permitirán monitorear el estado de los servicios.
 
 ## Contribuciones
 
