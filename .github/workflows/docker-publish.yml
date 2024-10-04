@@ -33,7 +33,7 @@ jobs:
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
 
-        steps:
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
