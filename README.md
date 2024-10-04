@@ -13,12 +13,19 @@ Este repositorio contiene un conjunto de archivos de configuración para crear u
 
 - [Docker](https://www.docker.com/) instalado en tu máquina.
 - [Docker Compose](https://docs.docker.com/compose/) instalado en tu máquina.
+- [WSL (Windows Subsystem for Linux)](https://docs.microsoft.com/en-us/windows/wsl/install) instalado en tu máquina, con Ubuntu 22.02 o superior
 - Conexión a internet para descargar las imágenes necesarias.
 
 ## Estructura del proyecto
 
-- **Dockerfile**: Define la imagen de Docker con Apache Spark y PySpark.
-- **docker-compose.yml**: Archivo de configuración de Docker Compose que define los servicios y redes.
+
+- **Dockerfile**: Define la imagen de Docker con Apache Spark, PySpark, Java y Scala.
+- **docker-compose.yml**: Archivo de configuración de Docker Compose que define los servicios `spark-master` y `spark-worker`, así como las redes y volúmenes necesarios.
+- **src/**: Contiene el código fuente del proyecto, incluyendo el archivo `requirements.txt` para las dependencias de Python.
+- **worker.py**: Archivo Python que se utilizará en el contenedor.
+- **pyproject.toml**: Define las dependencias del proyecto, la configuración del entorno, y otros metadatos necesarios.
+- **Makefile**: Facilita el uso de docker y permite levantar docker compose utilizado `make run` y entrar en el contenedor `spark-master` utilizando el comando `make run-docker`.
+- **start_wsl.sh**: Script bash que permite instalar depencias necesarias al iniciar wsl. En concreto, instala docker y make que son necesarias para el proyecto.
 
 ## Instrucciones de uso
 
@@ -31,26 +38,49 @@ Este repositorio contiene un conjunto de archivos de configuración para crear u
    ```bash
    cd <NOMBRE_DEL_DIRECTORIO>
    ```
-
-3. Levanta los servicios utilizando Docker Compose:  
+3. Inicializa wsl,  se necesitará Ubutu-22.04:
    ```bash
-   docker-compose up
+   wsl -d Ubuntu-22.04
+   ```
+4. Instala las dependencias a través del fichero bash:
+   ```bash
+   ./start_wsl.sh
    ```
 
-4. Accede al contenedor interactivo:  
+5. Ejecuta make para levantar spark
    ```bash
-   docker exec -it <NOMBRE_DEL_CONTENEDOR> /bin/bash
+   make run
+   ```
+
+6. Accede al contenedor interactivo de master:  
+   ```bash
+   make run-docker
    ```
 
 ## Ejemplo de uso
 
-Una vez dentro del contenedor, puedes iniciar una sesión de PySpark ejecutando el siguiente comando:
+Una vez dentro del contenedor del master, puedes iniciar una sesión de PySpark ejecutando el siguiente comando:
 
 ```bash
 pyspark
 ```
 
 Esto abrirá la interfaz interactiva de PySpark, donde podrás ejecutar tus scripts y realizar análisis de datos.
+
+Incluso puedes invocar al launcher definido en la ruta raiz del proyecto `worker.py`.
+
+Para ello deberás ejecutar el siguiente comando:
+
+```bash
+spark-submit worker.py
+``` 
+
+Este comando lanzará el script worker.py que se encargará de lanzar el método main() de `app.py.`
+sis de datos.
+](http://localhost:8080)  
+- **Spark Worker UI**: [http://localhost:8081](http://localhost:8081)  
+
+Estas interfaces te permitirán monitorear el estado de los servicios.
 
 ## Contribuciones
 
