@@ -16,6 +16,5 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.commitizen]
 name = "cz_conventional_commits"
-version = "2.0.0"
-version_scheme = "by_tag"
-tag_name = "v$VERSION"
+version = "0.1.2"
+tag_name = "v$VERSION"  # Tag format
