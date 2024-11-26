@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile
+    platform: linux/amd64
     ports:
       - "7077:7077"  # Puerto del master
       - "8080:8080"  # Interfaz web del master
@@ -19,6 +20,7 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile
+    platform: linux/amd64
     ports:
       - "8081:8081"  # Interfaz web del worker
     environment:
